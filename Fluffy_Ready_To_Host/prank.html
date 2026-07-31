@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRITICAL SYSTEM ERROR</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            user-select: none;
+        }
+        #terminal {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+        .error-text {
+            color: #ff3333;
+            font-weight: bold;
+        }
+        .warn-text {
+            color: #ffcc00;
+        }
+        .success-text {
+            color: #33ff33;
+        }
+        .progress-bar-container {
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #0f0;
+            height: 25px;
+            margin: 10px 0;
+            position: relative;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #0f0;
+            transition: width 0.1s linear;
+        }
+        .progress-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+        }
+        #fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 0, 0, 0.1);
+            pointer-events: none;
+            display: none;
+            z-index: 9999;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        .centered-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #ff3333;
+            background: #110000;
+            padding: 30px;
+            text-align: center;
+            max-width: 90%;
+            box-shadow: 0 0 20px #ff3333;
+            display: none;
+            z-index: 10000;
+        }
+        .centered-box h1 {
+            color: #ff3333;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .centered-box p {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #ff3333;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #ff6666;
+        }
+        #click-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="click-screen">
+        <div style="font-size: 24px; color: #0f0;">
+            [ SYSTEM BOOT INCOMPLETE ]<br><br>
+            <span style="animation: blink 1s infinite;">&gt; CLICK ANYWHERE TO INITIALIZE SYSTEM RECOVERY &lt;</span>
+        </div>
+    </div>
+
+    <div id="fullscreen-overlay"></div>
+    <canvas id="matrix" class="matrix-rain"></canvas>
+    
+    <div id="terminal"></div>
+
+    <div id="prank-modal" class="centered-box">
+        <h1>PRANKED!</h1>
+        <p>This is a simulated threat. No harm was done to your system or files.</p>
+        <button class="btn" onclick="resetPrank()">Close Simulator</button>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const overlay = document.getElementById('fullscreen-overlay');
+        const clickScreen = document.getElementById('click-screen');
+        const prankModal = document.getElementById('prank-modal');
+        let audioCtx = null;
+
+        // Initialize audio on first click
+        clickScreen.addEventListener('click', () => {
+            clickScreen.style.display = 'none';
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            try {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                }
+            } catch (e) {}
+            startSequence();
+        });
+
+        function playSound(freq, duration, type = 'sine') {
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        // Matrix Rain Background Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        let columns = [];
+        const fontSize = 14;
+
+        function initMatrix() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            columns = Array(Math.floor(canvas.width / fontSize)).fill(0);
+        }
+        window.addEventListener('resize', initMatrix);
+        initMatrix();
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < columns.length; i++) {
+                const text = String.fromCharCode(Math.floor(Math.random() * 96) + 33);
+                const x = i * fontSize;
+                const y = columns[i] * fontSize;
+                ctx.fillText(text, x, y);
+                if (y > canvas.height && Math.random() > 0.975) {
+                    columns[i] = 0;
+                }
+                columns[i]++;
+            }
+        }
+        setInterval(drawMatrix, 33);
+
+        const logs = [
+            { text: "Loading Recovery Subsystem v4.12...", delay: 200, type: "info" },
+            { text: "Connecting to remote repair server [127.0.0.1]...", delay: 500, type: "info" },
+            { text: "CONNECTION SECURED", delay: 300, type: "success" },
+            { text: "Scanning local file systems...", delay: 400, type: "info" },
+            { text: "WARNING: Unknown signature found in C:\\Windows\\System32\\drivers\\etc\\hosts", delay: 600, type: "warn" },
+            { text: "CRITICAL: Malicious code injected into explorer.exe payload!", delay: 400, type: "error" },
+            { text: "Attempting memory isolation...", delay: 500, type: "info" },
+            { text: "ISOLATION FAILED: Memory registers overwriting rapidly.", delay: 300, type: "error" },
+            { text: "ROOT SHELL ACQUIRED BY UNKNOWN ADVERSARY", delay: 800, type: "error" },
+            { text: "Executing external script payload: 'annihilate.sh'", delay: 600, type: "error" },
+            { text: "DELETING FILES...", delay: 500, type: "error" }
+        ];
+
+        async function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function printLine(text, type = "info") {
+            const line = document.createElement('div');
+            if (type === "error") {
+                line.className = "error-text";
+                playSound(150, 0.3, 'sawtooth');
+            } else if (type === "warn") {
+                line.className = "warn-text";
+                playSound(300, 0.15, 'triangle');
+            } else if (type === "success") {
+                line.className = "success-text";
+                playSound(600, 0.1, 'sine');
+            } else {
+                playSound(1000, 0.05, 'sine');
+            }
+            line.innerHTML = `> ${text}`;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        async function startSequence() {
+            for (let log of logs) {
+                await sleep(log.delay);
+                await printLine(log.text, log.type);
+            }
+            await sleep(500);
+            await simulateDeletion();
+        }
+
+        async function simulateDeletion() {
+            const targets = [
+                "C:\\Users\\Admin\\Documents\\*.*",
+                "C:\\Users\\Admin\\Pictures\\*.*",
+                "C:\\Windows\\System32\\cmd.exe",
+                "C:\\Windows\\System32\\hal.dll",
+                "Entire Registry Hive [HKLM\\SOFTWARE]"
+            ];
+
+            for (let target of targets) {
+                await printLine(`Purging: ${target}`, "error");
+                const progressDiv = document.createElement('div');
+                progressDiv.className = "progress-bar-container";
+                progressDiv.innerHTML = `<div class="progress-bar"></div><div class="progress-text">0%</div>`;
+                terminal.appendChild(progressDiv);
+                terminal.scrollTop = terminal.scrollHeight;
+
+                const bar = progressDiv.querySelector('.progress-bar');
+                const text = progressDiv.querySelector('.progress-text');
+
+                for (let i = 0; i <= 100; i += 10) {
+                    bar.style.width = i + '%';
+                    text.innerText = i + '%';
+                    playSound(200 + i * 5, 0.05, 'sawtooth');
+                    await sleep(80);
+                }
+                text.style.color = '#fff';
+                text.innerText = 'PURGED';
+                await sleep(150);
+            }
+
+            // Rapid flashing error overlay
+            overlay.style.display = 'block';
+            let flashCount = 0;
+            const flashInterval = setInterval(() => {
+                overlay.style.backgroundColor = flashCount % 2 === 0 ? 'rgba(255, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0)';
+                playSound(100, 0.08, 'sawtooth');
+                flashCount++;
+                if (flashCount > 15) {
+                    clearInterval(flashInterval);
+                    overlay.style.display = 'none';
+                    showPrankResult();
+                }
+            }, 100);
+        }
+
+        function showPrankResult() {
+            prankModal.style.display = 'block';
+            playSound(523.25, 0.2, 'sine'); // C5
+            setTimeout(() => playSound(659.25, 0.2, 'sine'), 150); // E5
+            setTimeout(() => playSound(783.99, 0.4, 'sine'), 300); // G5
+        }
+
+        function resetPrank() {
+            prankModal.style.display = 'none';
+            terminal.innerHTML = '';
+            clickScreen.style.display = 'flex';
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+    </script>
+</body>
+</html>

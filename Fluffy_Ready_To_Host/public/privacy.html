@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Fluffy Doghy</title>
+  <meta name="description" content="Fluffy Doghy Privacy Policy. How we handle your data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #07070f; --surface: #0f0f1e; --card: #15152a;
+      --border: rgba(167,139,250,0.15); --purple: #a78bfa; --purple-light: #c4b5fd;
+      --text: #e2e0f0; --muted: #8b8aaa; --accent: #7c3aed; --green: #4ade80;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7; min-height: 100vh; }
+    .bg-glow { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(74,222,128,0.06) 0%, rgba(124,58,237,0.08) 50%, transparent 70%); }
+    header { position: relative; z-index: 1; text-align: center; padding: 60px 20px 40px; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(74,222,128,0.05) 0%, transparent 100%); }
+    .logo { font-family: 'Fredoka', sans-serif; font-size: 2.4rem; font-weight: 700; color: var(--purple-light); }
+    .logo span { opacity: 0.7; font-size: 1.1rem; display: block; margin-top: 4px; color: var(--muted); font-family: 'Inter', sans-serif; font-weight: 400; }
+    h1 { font-family: 'Fredoka', sans-serif; font-size: 2rem; font-weight: 600; color: var(--green); margin-top: 24px; }
+    .last-updated { color: var(--muted); font-size: 13px; margin-top: 8px; }
+    main { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+    h2 { font-family: 'Fredoka', sans-serif; font-size: 1.25rem; font-weight: 600; color: var(--purple-light); margin-bottom: 12px; }
+    p { color: var(--text); margin-bottom: 12px; opacity: 0.88; }
+    p:last-child { margin-bottom: 0; }
+    ul { padding-left: 20px; color: var(--text); opacity: 0.88; }
+    ul li { margin-bottom: 6px; }
+    .badge { display: inline-block; background: rgba(74,222,128,0.15); color: var(--green); border: 1px solid rgba(74,222,128,0.3); border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 500; margin-left: 8px; }
+    .highlight { background: rgba(74,222,128,0.07); border-left: 3px solid var(--green); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+    nav { text-align: center; padding: 24px; position: relative; z-index: 1; border-top: 1px solid var(--border); }
+    nav a { color: var(--purple); text-decoration: none; margin: 0 16px; font-weight: 500; }
+    nav a:hover { color: var(--purple-light); }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <header>
+    <div class="logo">🐶 Fluffy Doghy <span>Community Game Platform</span></div>
+    <h1>Privacy Policy</h1>
+    <p class="last-updated">Last updated: July 2026</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>🔍 What We Collect</h2>
+      <ul>
+        <li><strong>Username</strong> — chosen by you at registration.</li>
+        <li><strong>Email</strong> — only if you use Gmail OTP verification (optional).</li>
+        <li><strong>Password</strong> — stored as plain text in local JSON (this is a local/indie server — use a unique password).</li>
+        <li><strong>Game data</strong> — bones, completed levels, skin, bio, friends list.</li>
+        <li><strong>Chat messages</strong> — stored up to the last 80 messages (public).</li>
+        <li><strong>Mailbox messages</strong> — stored server-side, visible only to sender and recipient.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>📧 Email Usage <span class="badge">OTP only</span></h2>
+      <p>Your email is used <strong>only</strong> to send your one-time login code (OTP). We do not send marketing emails, share your email with third parties, or store it beyond your user profile.</p>
+      <div class="highlight">
+        ✅ Email verification is completely optional. You can play without providing an email using username + password.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🔒 Data Storage</h2>
+      <p>All data is stored locally on the server in JSON files:</p>
+      <ul>
+        <li><code>data/users.json</code> — user accounts</li>
+        <li><code>data/levels.json</code> — community levels</li>
+        <li><code>data/chat.json</code> — recent chat (last 80 msgs)</li>
+        <li><code>data/mail.json</code> — mailbox messages</li>
+        <li><code>data/friends.json</code> — friend connections</li>
+        <li><code>data/updates.json</code> — owner announcements</li>
+      </ul>
+      <p style="margin-top:12px;">This is a personal/indie game server. Data is not backed up automatically — treat it as best-effort storage.</p>
+    </div>
+
+    <div class="card">
+      <h2>👁️ Data Visibility</h2>
+      <ul>
+        <li><strong>Public</strong>: username, role, bones, bio, completed level count, friend count</li>
+        <li><strong>Private</strong>: email, password, mailbox contents, exact friend list</li>
+        <li><strong>Owner-visible</strong>: all user data (for moderation purposes)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🗑️ Deletion</h2>
+      <p>To delete your account and all associated data, contact the owner at <strong>sonuubhagat11@gmail.com</strong> or via the in-game Mailbox. We will process the request within 7 days.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔄 Changes</h2>
+      <p>We may update this Privacy Policy. Changes will be announced via the in-game Updates feed. Continued use of the platform constitutes acceptance.</p>
+    </div>
+
+    <div class="card">
+      <h2>📨 Contact</h2>
+      <p>Privacy questions? Message the owner in-game via the Mailbox or email <strong>sonuubhagat11@gmail.com</strong>.</p>
+    </div>
+  </main>
+
+  <nav>
+    <a href="/">🐶 Back to Game</a>
+    <a href="/tos">Terms of Service</a>
+  </nav>
+</body>
+</html>

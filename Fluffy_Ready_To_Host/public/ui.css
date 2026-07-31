@@ -1,0 +1,101 @@
+/* Multiplayer UI Overlay Styles */
+#mp-ui-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.mp-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(16, 20, 30, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  pointer-events: auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.mp-modal h2 { margin-bottom: 16px; font-weight: 600; font-size: 20px; }
+.mp-modal.hidden { display: none !important; }
+
+.mp-input {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-family: 'Fredoka', sans-serif;
+  width: 100%;
+}
+.mp-input:focus { outline: none; border-color: #7df9ff; }
+
+.mp-btn {
+  background: #534AB7;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  transition: 0.1s;
+}
+.mp-btn:hover { background: #3C3489; transform: scale(1.02); }
+.mp-btn-danger { background: #e63946; }
+.mp-btn-danger:hover { background: #b01b26; }
+
+.mp-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Tabs */
+.mp-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.mp-tab { padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; }
+.mp-tab.active { background: #534AB7; }
+
+/* Lists */
+.mp-list { flex-grow: 1; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
+.mp-list-item { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+
+/* Main HUD Button */
+#mp-hud-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #534AB7;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.2s;
+}
+#mp-hud-btn:hover { transform: scale(1.1); }
